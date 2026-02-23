@@ -14,6 +14,7 @@ import { ReviewModule } from './review/review.module';
     }),
     PrismaModule,
     MovieModule,
+    DirectorModule,
     ReviewModule,
   ],
   controllers: [AppController],
