@@ -65,11 +65,9 @@ describe('DirectorService', () => {
 
     expect(prisma.director.findUnique).toHaveBeenCalledWith({
       where: { id: 1 },
-      /* 
       include: {
-         movies: true,
-       },
-       */
+        movies: true,
+      },
     });
     expect(result).toEqual(director);
   });
