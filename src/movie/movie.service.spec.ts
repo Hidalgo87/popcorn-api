@@ -35,6 +35,10 @@ describe('MovieService', () => {
     jest.clearAllMocks();
   });
 
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
   it('should create a movie', async () => {
     const dto = { title: 'Inception', directorId: 1 };
     mockPrisma.movie.create.mockResolvedValue({ id: 1, ...dto });
@@ -47,17 +51,31 @@ describe('MovieService', () => {
     expect(result).toEqual({ id: 1, ...dto });
   });
 
-  it('should return all movies', async () => {
+  it('should return all movies with relations', async () => {
     const movies = [{ id: 1, title: 'Batman' }];
     mockPrisma.movie.findMany.mockResolvedValue(movies);
 
     const result = await service.findAll();
 
-    expect(prisma.movie.findMany).toHaveBeenCalled();
+    expect(prisma.movie.findMany).toHaveBeenCalledWith({
+      include: {
+        director: true,
+        reviews: true,
+      },
+    });
+
     expect(result).toEqual(movies);
   });
 
-  it('should return one movie', async () => {
+  it('should return empty array if no movies exist', async () => {
+    mockPrisma.movie.findMany.mockResolvedValue([]);
+
+    const result = await service.findAll();
+
+    expect(result).toEqual([]);
+  });
+
+  it('should return one movie with relations', async () => {
     const movie = { id: 1, title: 'Batman' };
     mockPrisma.movie.findUnique.mockResolvedValue(movie);
 
@@ -65,9 +83,21 @@ describe('MovieService', () => {
 
     expect(prisma.movie.findUnique).toHaveBeenCalledWith({
       where: { id: 1 },
-      include: { director: true, reviews: true },
+      include: {
+        director: true,
+        reviews: true,
+      },
     });
+
     expect(result).toEqual(movie);
+  });
+
+  it('should return null if movie not found', async () => {
+    mockPrisma.movie.findUnique.mockResolvedValue(null);
+
+    const result = await service.findOne(999);
+
+    expect(result).toBeNull();
   });
 
   it('should update a movie', async () => {
@@ -80,6 +110,7 @@ describe('MovieService', () => {
       where: { id: 1 },
       data: { title: 'Updated' },
     });
+
     expect(result).toEqual(updated);
   });
 
@@ -92,6 +123,15 @@ describe('MovieService', () => {
     expect(prisma.movie.delete).toHaveBeenCalledWith({
       where: { id: 1 },
     });
+
     expect(result).toEqual(deleted);
+  });
+
+  it('should propagate Prisma errors', async () => {
+    mockPrisma.movie.create.mockRejectedValue(new Error('DB error'));
+
+    await expect(
+      service.create({ title: 'Fail', directorId: 1 } as any),
+    ).rejects.toThrow('DB error');
   });
 });

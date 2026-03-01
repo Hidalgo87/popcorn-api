@@ -74,8 +74,13 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "collectCoverage": true,
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.ts",
+      "!main.ts",
+      "!**/*.module.ts",
+      "!**/*.entity.ts",
+      "!prisma/**"
     ],
     "coverageDirectory": "../coverage",
     "coverageReporters": [

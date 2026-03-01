@@ -36,7 +36,7 @@ describe('ReviewService', () => {
   });
 
   it('should create a review', async () => {
-    const dto = { content: 'Great movie!', movieId: 1 };
+    const dto = { rating: 5, movieId: 1 };
     mockPrisma.review.create.mockResolvedValue({ id: 1, ...dto });
 
     const result = await service.create(dto as any);
@@ -44,44 +44,52 @@ describe('ReviewService', () => {
     expect(prisma.review.create).toHaveBeenCalledWith({
       data: dto,
     });
+
     expect(result).toEqual({ id: 1, ...dto });
   });
 
-  it('should return all reviews', async () => {
-    const reviews = [{ id: 1, content: 'Nice' }];
+  it('should return all reviews with movie', async () => {
+    const reviews = [{ id: 1, rating: 5 }];
     mockPrisma.review.findMany.mockResolvedValue(reviews);
 
     const result = await service.findAll();
 
-    expect(prisma.review.findMany).toHaveBeenCalled();
+    expect(prisma.review.findMany).toHaveBeenCalledWith({
+      include: {
+        movie: true,
+      },
+    });
+
     expect(result).toEqual(reviews);
   });
 
   it('should return one review', async () => {
-    const review = { id: 1, content: 'Nice' };
+    const review = { id: 1, rating: 5 };
     mockPrisma.review.findUnique.mockResolvedValue(review);
 
     const result = await service.findOne(1);
 
     expect(prisma.review.findUnique).toHaveBeenCalledWith({
       where: { id: 1 },
-      include: { movie: true },
+      include: {
+        movie: true,
+      },
     });
+
     expect(result).toEqual(review);
   });
 
   it('should update a review', async () => {
-    const updated = { id: 1, content: 'Updated review' };
+    const updated = { id: 1, rating: 4 };
     mockPrisma.review.update.mockResolvedValue(updated);
 
-    const result = await service.update(1, {
-      content: 'Updated review',
-    } as any);
+    const result = await service.update(1, { rating: 4 } as any);
 
     expect(prisma.review.update).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: { content: 'Updated review' },
+      data: { rating: 4 },
     });
+
     expect(result).toEqual(updated);
   });
 
@@ -94,6 +102,7 @@ describe('ReviewService', () => {
     expect(prisma.review.delete).toHaveBeenCalledWith({
       where: { id: 1 },
     });
+
     expect(result).toEqual(deleted);
   });
 });

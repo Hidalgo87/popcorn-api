@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DirectorService } from './director.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { DirectorService } from './director.service';
 
 describe('DirectorService', () => {
   let service: DirectorService;
@@ -35,6 +35,10 @@ describe('DirectorService', () => {
     jest.clearAllMocks();
   });
 
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
   it('should create a director', async () => {
     const dto = { name: 'Christopher Nolan' };
     mockPrisma.director.create.mockResolvedValue({ id: 1, ...dto });
@@ -44,17 +48,31 @@ describe('DirectorService', () => {
     expect(prisma.director.create).toHaveBeenCalledWith({
       data: dto,
     });
+
     expect(result).toEqual({ id: 1, ...dto });
   });
 
-  it('should return all directors', async () => {
+  it('should return all directors with movies', async () => {
     const directors = [{ id: 1, name: 'Nolan' }];
     mockPrisma.director.findMany.mockResolvedValue(directors);
 
     const result = await service.findAll();
 
-    expect(prisma.director.findMany).toHaveBeenCalled();
+    expect(prisma.director.findMany).toHaveBeenCalledWith({
+      include: {
+        movies: true,
+      },
+    });
+
     expect(result).toEqual(directors);
+  });
+
+  it('should return empty array if no directors exist', async () => {
+    mockPrisma.director.findMany.mockResolvedValue([]);
+
+    const result = await service.findAll();
+
+    expect(result).toEqual([]);
   });
 
   it('should return one director', async () => {
@@ -69,18 +87,29 @@ describe('DirectorService', () => {
         movies: true,
       },
     });
+
     expect(result).toEqual(director);
   });
+
+  it('should return null if director not found', async () => {
+    mockPrisma.director.findUnique.mockResolvedValue(null);
+
+    const result = await service.findOne(999);
+
+    expect(result).toBeNull();
+  });
+
   it('should update a director', async () => {
-    const updated = { id: 1, name: 'Updated Name' };
+    const updated = { id: 1, name: 'Updated' };
     mockPrisma.director.update.mockResolvedValue(updated);
 
-    const result = await service.update(1, { name: 'Updated Name' } as any);
+    const result = await service.update(1, { name: 'Updated' } as any);
 
     expect(prisma.director.update).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: { name: 'Updated Name' },
+      data: { name: 'Updated' },
     });
+
     expect(result).toEqual(updated);
   });
 
@@ -93,6 +122,15 @@ describe('DirectorService', () => {
     expect(prisma.director.delete).toHaveBeenCalledWith({
       where: { id: 1 },
     });
+
     expect(result).toEqual(deleted);
+  });
+
+  it('should propagate Prisma errors', async () => {
+    mockPrisma.director.create.mockRejectedValue(new Error('DB error'));
+
+    await expect(service.create({ name: 'Fail' } as any)).rejects.toThrow(
+      'DB error',
+    );
   });
 });
