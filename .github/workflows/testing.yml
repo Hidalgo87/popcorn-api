@@ -33,9 +33,16 @@ jobs:
 
       - name: Enforce coverage ≥ 60%
         run: |
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "Coverage file not found"
+            exit 1
+          fi
+
           COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
+          COVERAGE_INT=${COVERAGE%.*}
           echo "Coverage is $COVERAGE%"
-          if (( $(echo "$COVERAGE < 60" | bc -l) )); then
+
+          if  [ "$COVERAGE_INT" -lt 60 ]; then
             echo "Coverage below 60%"
             exit 1
           fi
