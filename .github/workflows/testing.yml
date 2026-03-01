@@ -1,10 +1,6 @@
 name: Testing Pipeline
 
 on:
-  pull_request:
-    branches:
-      - develop
-      - master
   push:
     branches:
       - develop
