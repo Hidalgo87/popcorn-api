@@ -1,6 +1,9 @@
 name: Production Pipeline
 
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master
@@ -8,6 +11,9 @@ on:
 jobs:
   production:
     runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/testdb
 
     steps:
       - name: Checkout repo
