@@ -47,7 +47,6 @@ describe('DirectorService', () => {
     expect(result).toEqual({ id: 1, ...dto });
   });
 
-  /*
   it('should return all directors', async () => {
     const directors = [{ id: 1, name: 'Nolan' }];
     mockPrisma.director.findMany.mockResolvedValue(directors);
@@ -96,5 +95,4 @@ describe('DirectorService', () => {
     });
     expect(result).toEqual(deleted);
   });
-  */
 });
