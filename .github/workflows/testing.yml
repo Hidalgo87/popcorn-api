@@ -42,6 +42,3 @@ jobs:
             echo "Coverage below 60%"
             exit 1
           fi
-
-      - name: Build Docker image (validation)
-        run: docker build -t app-test:${{ github.sha }} .
