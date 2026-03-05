@@ -78,8 +78,6 @@
     "collectCoverageFrom": [
       "**/*.ts",
       "!main.ts",
-      "!**/*.module.ts",
-      "!**/*.entity.ts",
       "!prisma/**"
     ],
     "coverageDirectory": "../coverage",
