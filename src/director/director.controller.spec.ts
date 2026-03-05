@@ -32,10 +32,10 @@ describe('DirectorController', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  /*
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
+    });
+    /*
 
   it('should create a director', async () => {
     const dto = { name: 'Nolan' };
