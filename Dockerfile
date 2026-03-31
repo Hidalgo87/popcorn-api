@@ -8,8 +8,6 @@ RUN npm install --omit=dev
 
 COPY . .
 
-RUN npx prisma generate
-
 RUN npm run build
 
 CMD ["./entrypoint.sh"]
