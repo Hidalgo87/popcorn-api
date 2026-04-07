@@ -11,7 +11,7 @@ import { DirectorService } from './director.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
 import { UpdateDirectorDto } from './dto/update-director.dto';
 
-@Controller('directors')
+@Controller({ path: 'directors', version: ['2'] })
 export class DirectorController {
   constructor(private readonly directorService: DirectorService) {}
 
