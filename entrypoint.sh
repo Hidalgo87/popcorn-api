@@ -1,9 +1,10 @@
 #!/bin/sh
 
 echo "Waiting for database..."
-sleep 5
+sleep 10
 
 echo "Running migrations..."
+npx prisma generate
 npx prisma migrate deploy
 
 echo "Starting app..."
