@@ -9,6 +9,7 @@ generator client {
 model Director {
   id      Int     @id @default(autoincrement())
   name    String
+  jsonDoctor Json @default("{}")
   movies  Movie[]
 }
 
