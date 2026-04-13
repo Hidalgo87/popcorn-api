@@ -1,11 +1,12 @@
 #!/bin/sh
 
-echo "Waiting for database..."
-sleep 10
-
-echo "Running migrations..."
 npx prisma generate
-npx prisma migrate deploy
+echo "Running migrations..."
+
+until npx prisma migrate deploy; do
+  echo "Migration failed, retrying in 3s..."
+  sleep 3
+done
 
 echo "Starting app..."
 node dist/src/main.js
