@@ -1,0 +1,24 @@
+server:
+  log_level: debug
+
+metrics:
+  wal_directory: /tmp/wal
+
+  global:
+    scrape_interval: 15s
+
+  configs:
+    - name: default
+
+      scrape_configs:
+        - job_name: my-api
+          metrics_path: /metrics
+
+          static_configs:
+            - targets:
+                - http://34.45.249.45:3000
+      remote_write:
+        - url: https://prometheus-prod-66-prod-us-east-3.grafana.net/api/prom/push
+          basic_auth:
+            username: 3113142
+            password: ${GRAFANA_API_KEY}
