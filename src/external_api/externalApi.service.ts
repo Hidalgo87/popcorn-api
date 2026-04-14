@@ -24,10 +24,9 @@ export class ExternalApiService {
     );
 
     if (!res.ok) {
-      console.log('res', res);
-      throw new Error('External API error');
+      throw new Error('External API error', { cause: await res.text() });
     }
 
-    return fullJson;
+    return res.json();
   }
 }

@@ -16,7 +16,7 @@ export class DirectorService {
       data: createDirectorDto,
     });
     const fullJson = this.externalApiService.createEmployee(createDirectorDto);
-    return fullJson;
+    return newDirector;
   }
 
   findAll() {
