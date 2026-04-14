@@ -1,0 +1,7 @@
+services:
+  grafana-agent:
+    image: grafana/agent:latest
+    volumes:
+      - ./:/etc/agent
+    command:
+      - --config.file=/etc/agent/grafana-agent.yaml

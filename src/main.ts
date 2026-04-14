@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { httpRequestsTotal, register } from './metrics';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,20 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use((req, res, next) => {
+    res.on('finish', () => {
+      httpRequestsTotal.inc({
+        method: req.method,
+        route: req.route?.path || req.url,
+        status: res.statusCode,
+      });
+    });
+    next();
+  });
+  app.use('/metrics', async (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Popcorn API')
