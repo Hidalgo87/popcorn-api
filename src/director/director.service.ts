@@ -39,6 +39,13 @@ export class DirectorService {
     });
   }
 
+  put(id: number, updateDirectorDto: UpdateDirectorDto) {
+    return this.prisma.director.update({
+      where: { id },
+      data: updateDirectorDto,
+    });
+  }
+
   remove(id: number) {
     return this.prisma.director.delete({
       where: { id },

@@ -33,6 +33,13 @@ export class ReviewService {
     });
   }
 
+  put(id: number, updateReviewDto: UpdateReviewDto) {
+    return this.prisma.review.update({
+      where: { id },
+      data: updateReviewDto,
+    });
+  }
+
   remove(id: number) {
     return this.prisma.review.delete({
       where: { id },

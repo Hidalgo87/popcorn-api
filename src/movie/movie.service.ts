@@ -39,6 +39,13 @@ export class MovieService {
     });
   }
 
+  put(id: number, data: UpdateMovieDto) {
+    return this.prisma.movie.update({
+      where: { id },
+      data,
+    });
+  }
+
   remove(id: number) {
     return this.prisma.movie.delete({
       where: { id },

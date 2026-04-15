@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { DirectorService } from './director.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
@@ -36,6 +37,14 @@ export class DirectorController {
     @Body() updateDirectorDto: UpdateDirectorDto,
   ) {
     return this.directorService.update(+id, updateDirectorDto);
+  }
+
+  @Put(':id')
+  put(
+    @Param('id') id: string,
+    @Body() updateDirectorDto: UpdateDirectorDto,
+  ) {
+    return this.directorService.put(+id, updateDirectorDto);
   }
 
   @Delete(':id')
