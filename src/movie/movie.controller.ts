@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -33,6 +34,11 @@ export class MovieController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() body: UpdateMovieDto) {
     return this.movieService.update(Number(id), body);
+  }
+
+  @Put(':id')
+  put(@Param('id') id: string, @Body() body: UpdateMovieDto) {
+    return this.movieService.put(Number(id), body);
   }
 
   @Delete(':id')

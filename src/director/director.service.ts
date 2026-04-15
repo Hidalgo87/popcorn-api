@@ -2,15 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDirectorDto } from './dto/create-director.dto';
 import { UpdateDirectorDto } from './dto/update-director.dto';
+import { ExternalApiService } from 'src/external_api/externalApi.service';
 
 @Injectable()
 export class DirectorService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private externalApiService: ExternalApiService,
+  ) {}
 
   create(createDirectorDto: CreateDirectorDto) {
-    return this.prisma.director.create({
+    const newDirector = this.prisma.director.create({
       data: createDirectorDto,
     });
+    const fullJson = this.externalApiService.createEmployee(createDirectorDto);
+    return newDirector;
   }
 
   findAll() {
@@ -27,6 +33,13 @@ export class DirectorService {
   }
 
   update(id: number, updateDirectorDto: UpdateDirectorDto) {
+    return this.prisma.director.update({
+      where: { id },
+      data: updateDirectorDto,
+    });
+  }
+
+  put(id: number, updateDirectorDto: UpdateDirectorDto) {
     return this.prisma.director.update({
       where: { id },
       data: updateDirectorDto,

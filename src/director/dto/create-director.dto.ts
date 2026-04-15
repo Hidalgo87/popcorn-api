@@ -1,7 +1,11 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsObject } from 'class-validator';
 
 export class CreateDirectorDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name!: string;
+
+  @IsObject()
+  @IsNotEmpty()
+  jsonDoctor!: Record<string, any>;
 }

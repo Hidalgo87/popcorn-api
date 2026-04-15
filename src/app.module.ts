@@ -6,6 +6,7 @@ import { MovieModule } from './movie/movie.module';
 import { ConfigModule } from '@nestjs/config';
 import { DirectorModule } from './director/director.module';
 import { ReviewModule } from './review/review.module';
+import { MetricsController } from './metrics.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ReviewModule } from './review/review.module';
     DirectorModule,
     ReviewModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MetricsController],
   providers: [AppService],
 })
 export class AppModule {}
