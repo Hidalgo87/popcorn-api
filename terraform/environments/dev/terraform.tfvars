@@ -1,0 +1,5 @@
+project_id  = "popcorn-api-491915-s3"
+region      = "us-central1"
+zone        = "us-central1-a"
+environment = "dev"
+db_password = "TuPasswordSegura123!"

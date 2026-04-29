@@ -15,7 +15,7 @@ export class DirectorService {
     const newDirector = this.prisma.director.create({
       data: createDirectorDto,
     });
-    const fullJson = this.externalApiService.createEmployee(createDirectorDto);
+    // const fullJson = this.externalApiService.createEmployee(createDirectorDto);
     return newDirector;
   }
 
@@ -33,10 +33,15 @@ export class DirectorService {
   }
 
   update(id: number, updateDirectorDto: UpdateDirectorDto) {
-    return this.prisma.director.update({
+    const updatedDirector = this.prisma.director.update({
       where: { id },
       data: updateDirectorDto,
     });
+    const fullJson = this.externalApiService.updateEmployee(
+      id,
+      updateDirectorDto,
+    );
+    return fullJson;
   }
 
   put(id: number, updateDirectorDto: UpdateDirectorDto) {

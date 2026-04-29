@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { DirectorService } from './director.service';
+import { ExternalApiService } from 'src/external_api/externalApi.service';
 
 describe('DirectorService', () => {
   let service: DirectorService;
@@ -16,6 +17,10 @@ describe('DirectorService', () => {
     },
   };
 
+  const mockExternalApiService = {
+    createEmployee: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -23,6 +28,10 @@ describe('DirectorService', () => {
         {
           provide: PrismaService,
           useValue: mockPrisma,
+        },
+        {
+          provide: ExternalApiService,
+          useValue: mockExternalApiService,
         },
       ],
     }).compile();
