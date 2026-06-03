@@ -8,7 +8,7 @@ export class HealthController {
       status: 'UP',
       release: 'canary',
       version: '4.0.0',
-      deploymentDate: Date.now(),
+      deploymentDate: '2026-06-03',
     };
   }
 }
