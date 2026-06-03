@@ -33,7 +33,7 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Popcorn API')
+    .setTitle('Popcorn API CANARYY')
     .setDescription('API documentation for Movies App')
     .setVersion('1.0')
     .addBearerAuth()

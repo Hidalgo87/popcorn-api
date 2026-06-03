@@ -6,8 +6,9 @@ export class HealthController {
   getHealth() {
     return {
       status: 'UP',
-      release: 'stable',
-      version: '3.0.0',
+      release: 'canary',
+      version: '4.0.0',
+      deploymentDate: Date.now(),
     };
   }
 }
