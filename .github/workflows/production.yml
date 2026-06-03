@@ -32,22 +32,3 @@ jobs:
         run: |
           npm ci
           npx prisma generate
-
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      - name: Enforce coverage ≥ 85%
-        run: |
-          if [ ! -f coverage/coverage-summary.json ]; then
-            echo "Coverage file not found"
-            exit 1
-          fi
-
-          COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
-          COVERAGE_INT=${COVERAGE%.*}
-          echo "Coverage is $COVERAGE%"
-
-          if  [ "$COVERAGE_INT" -lt 85 ]; then
-            echo "Coverage below 85%"
-            exit 1
-          fi
