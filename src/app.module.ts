@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DirectorModule } from './director/director.module';
 import { ReviewModule } from './review/review.module';
 import { MetricsController } from './metrics.controller';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { MetricsController } from './metrics.controller';
     DirectorModule,
     ReviewModule,
   ],
-  controllers: [AppController, MetricsController],
+  controllers: [AppController, MetricsController, HealthController],
   providers: [AppService],
 })
 export class AppModule {}
